@@ -79,10 +79,53 @@ class Projectile {
         this.position.y += this.velocity.y
     }
 }
+class Invader {
+    constructor() {
 
+
+        this.velocity = {
+            x:0,
+            y:0
+        }
+
+        const image = new Image()
+        image.src = './Assets/invader.png'
+        image.onload = () => {   
+        const scale = 1
+        this.image = image
+        this.width = image.width * scale
+        this.height = image.height * scale
+        this.position = {
+            x: canvas.width / 2 - this.width / 2,
+            y: canvas.height / 2
+        }
+    }
+}
+
+    draw() {
+     // c.fillStyle = 'red'
+     // c.fillRect(this.position.x, this.position.y, this.width,
+     //     this.height)
+        c.drawImage(this.image, 
+            this.position.x, 
+            this.position.y, 
+            this.width, 
+            this.height
+        )
+    }
+  
+
+    update () {
+        if(this.image){
+            this.draw()
+            this.position.x += this.velocity.x
+            this.position.y += this.velocity.y
+        }
+    }
+}
 const player = new Player()
-const projectiles = [
-    ]
+const invader = new Invader
+const projectiles = [    ]
 const keys = {
     a: {
         pressed: false
@@ -99,12 +142,18 @@ function animate() {
     requestAnimationFrame(animate)
     c.fillStyle = 'black'
     c.fillRect(0, 0, canvas.width, canvas.height)
+    invader.update()
     player.update()
-    projectiles.forEach(projectile => {
-        if(projectile.position.y + projectile.radius <= 0) {
-            projectiles.splice()
+    projectiles.forEach((projectile, index) => {
+        if (projectile.position.y + projectile.radius <= 0) {
+            setTimeout(() => {
+                projectiles.splice(index, 1)
+            }, 0)
+           
+        } else {
+            projectile.update()
         }
-        projectile.update()
+       
     })
 
     if (keys.a.pressed && player.position.x >= 0) {
@@ -144,7 +193,7 @@ addEventListener('keydown', ({key}) => {
                     y: -10
                 }
             }))
-            console.log(projectiles)
+          //  console.log(projectiles)
             break
    }
 })
