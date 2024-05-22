@@ -60,7 +60,7 @@ class Projectile {
         this.position = position
         this.velocity = velocity
 
-        this.radius = 4
+        this.radius = 3
     }
 
     draw() {
@@ -81,7 +81,8 @@ class Projectile {
 }
 
 const player = new Player()
-const projectiles = []
+const projectiles = [
+    ]
 const keys = {
     a: {
         pressed: false
@@ -99,8 +100,11 @@ function animate() {
     c.fillStyle = 'black'
     c.fillRect(0, 0, canvas.width, canvas.height)
     player.update()
-    projectiles.forEach(projectile =>{
-        projectile.update
+    projectiles.forEach(projectile => {
+        if(projectile.position.y + projectile.radius <= 0) {
+            projectiles.splice()
+        }
+        projectile.update()
     })
 
     if (keys.a.pressed && player.position.x >= 0) {
@@ -120,26 +124,27 @@ animate()
 addEventListener('keydown', ({key}) => {
     switch(key) {
         case 'a':
-            console.log('left')
+           // console.log('left')
 
             keys.a.pressed = true
             break
         case 'd':
-            console.log('Right')
+         //   console.log('Right')
             keys.d.pressed = true
             break
         case ' ':
-            console.log('space')
+          //  console.log('space')
             projectiles.push(new Projectile({
                 position: {
-                    x: 200,
-                    y: 200
+                    x: player.position.x + player.width / 2,
+                    y: player.position.y
                 },
                 velocity: {
                     x: 0,
-                    y: 0
+                    y: -10
                 }
             }))
+            console.log(projectiles)
             break
    }
 })
@@ -147,16 +152,16 @@ addEventListener('keydown', ({key}) => {
 addEventListener('keyup', ({key}) => {
     switch(key) {
         case 'a':
-            console.log('left')
+          //  console.log('left')
 
             keys.a.pressed = false
             break
         case 'd':
-            console.log('Right')
+         //   console.log('Right')
             keys.d.pressed = false
             break
         case ' ':
-            console.log('space')
+         //   console.log('space')
             break
    }
 })
