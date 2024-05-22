@@ -123,6 +123,20 @@ class Invader {
         }
     }
 }
+
+class Grid {
+    constructor() {
+        this.position = {
+            x: 0,
+            y: 0
+        }
+       this.velocity = {
+        x: 0,
+        y: 0
+    }
+    this.invaders = []
+}
+}
 const player = new Player()
 const invader = new Invader
 const projectiles = [    ]
