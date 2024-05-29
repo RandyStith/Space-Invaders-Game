@@ -104,7 +104,11 @@ class InvaderProjectile {
         invaderProjectiles.push(new InvaderProjectile({
             position: {
                 x: this.position.x + this.width / 2,
-                y: this.position.y
+                y: this.position.y + this.height
+            },
+            velocity: {
+                x: 0,
+                y: 5
             }
         }))
     }
@@ -193,6 +197,7 @@ const player = new Player()
 
 const projectiles = []
 const grids = []
+const invaderProjectiles = []
 const keys = {
     a: {
         pressed: false
@@ -208,11 +213,16 @@ const keys = {
 let frames = 0
 let randomInterval = Math.floor((Math.random() * 500) + 500)
 
+
+
 function animate() {
     requestAnimationFrame(animate)
     c.fillStyle = 'black'
     c.fillRect(0, 0, canvas.width, canvas.height)
     player.update()
+    invaderProjectiles.forEach((invaderProjectile) => {
+        invaderProjectile.update()
+    })
     projectiles.forEach((projectile, index) => {
         if (projectile.position.y + projectile.radius <= 0) {
             setTimeout(() => {
@@ -226,6 +236,11 @@ function animate() {
     })
     grids.forEach((grid, gridIndex) => {
         grid.update()
+      if (frames % 100 === 0 && grid.invaders.length > 0) {
+        grid.invaders[Math.floor(Math.random() * grid.invaders.
+            length)]
+      }
+       
         grid.invaders.forEach((invader, i) => {
             invader.update({ velocity: grid.velocity })
             projectiles.forEach((projectile, j) => {
@@ -267,7 +282,8 @@ function animate() {
                 }
             })
         })
-    })
+   } )  
+    
     if (keys.a.pressed && player.position.x >= 0) {
         player.velocity.x = -7
         player.rotation = -0.15
